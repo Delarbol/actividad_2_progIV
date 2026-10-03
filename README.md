@@ -1,4 +1,5 @@
 # MarketSoft Frontend
+Repositorio público: https://github.com/usuario/marketsoft-frontend
 
 SPA para administrar el supermercado de la Actividad Colaborativa II de Programación IV, Universidad de Manizales. Consume la API REST de [la actividad anterior](https://github.com/Delarbol/actividad_1_progIV) mediante Axios. Usa React, React Router y Bootstrap con la paleta Sintaxis & Tierra.
 
@@ -57,6 +58,7 @@ Flujo inicial recomendado: registrar un proveedor y un usuario, crear productos 
 
 El rol es una etiqueta, igual que en la API anterior; no implementa autenticación ni permisos. El frontend no envía fechas, totales ni precios de detalle. Los cálculos de inventario, precios históricos y totales persistidos permanecen en el backend. La interfaz solamente formatea importes COP y presenta subtotales informativos. Los conflictos de stock, correo duplicado o registros relacionados se muestran sin descartar el formulario.
 
+Cada módulo principal presenta una tabla de registros con acciones para crear, editar y eliminar. Los formularios de creación y edición consumen directamente los endpoints del backend.
 ## Arquitectura
 
 ```text
