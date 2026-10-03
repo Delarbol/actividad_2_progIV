@@ -114,7 +114,7 @@ Usa `API_URL` para apuntar esta prueba a otra instancia. Se recomienda una base 
 
 Se realizó una verificación funcional local del frontend MarketSoft. El proyecto fue clonado desde el repositorio de GitHub, se instalaron las dependencias con `npm.cmd install` y se ejecutó correctamente con `npm.cmd start` en `http://localhost:5173`.
 
-Durante la prueba, la interfaz cargó correctamente en el navegador, presentó el resumen general del sistema y se conectó con el backend disponible en `http://localhost:3000/api`. La aplicación consumió datos reales de la API, mostrando registros existentes de proveedores.
+Durante la prueba, la interfaz cargó correctamente en el navegador, presentó el resumen general del sistema y se conectó con el backend disponible en `http://localhost:3000/api`. La aplicación consumió datos reales de la API, mostrando registros existentes de proveedores y se hizo un proveedor prueba
 
 Además, se ejecutó la compilación de producción con:
 
