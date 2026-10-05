@@ -14,6 +14,7 @@ import {
 import Dashboard from './pages/Dashboard';
 import ResourcePage from './pages/ResourcePage';
 import SalePage from './pages/SalePage';
+// Dejamos juntas la ruta, el nombre y el icono de cada opción del menú.
 const navigation = [
   ['/', 'Resumen', LayoutDashboard],
   ['/products', 'Productos', Package],
@@ -29,6 +30,7 @@ export default function App() {
       path === '/' ? location.pathname === '/' : location.pathname.startsWith(path),
     )?.[1] || 'Página no encontrada';
   useEffect(() => {
+    // Al cambiar de pantalla cerramos el menú móvil y actualizamos el título de la pestaña.
     setOpen(false);
     document.title = `${title} · MarketSoft`;
   }, [location.pathname, title]);
@@ -113,6 +115,7 @@ export default function App() {
         <main id="main" tabIndex={-1}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            {/* Reutilizamos la página de gestión. La key reinicia su estado al cambiar de recurso. */}
             {['products', 'users', 'providers', 'sales'].map((resource) => (
               <Route
                 key={resource}

@@ -1,3 +1,4 @@
+/* Dejamos acá la paleta para reutilizar los mismos colores en toda la aplicación. */
 :root {
   --paper: #f8fafc;
   --ink: #0f172a;
@@ -34,6 +35,7 @@ input:focus-visible {
   outline: 3px solid #15803d;
   outline-offset: 3px;
 }
+/* Organizamos la pantalla con un menú lateral fijo y el contenido principal a su derecha. */
 .app-shell {
   display: flex;
   min-height: 100vh;
@@ -234,6 +236,7 @@ h1 {
   justify-content: center;
   gap: 8px;
 }
+/* Ajustamos los estados del botón de Bootstrap para mantener el color de la acción principal. */
 .btn-primary {
   --bs-btn-bg: #ea580c;
   --bs-btn-border-color: #ea580c;
@@ -380,6 +383,7 @@ h1 {
   font-size: 10px;
   box-shadow: 0 5px 15px #00281822;
 }
+/* En escritorio distribuimos los cuatro indicadores del resumen en una sola fila. */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -708,6 +712,7 @@ h1 {
   font-size: 13px;
   margin: 16px;
 }
+/* Limitamos el tamaño del diálogo para que también se pueda usar en pantallas pequeñas. */
 .app-dialog {
   width: min(560px, calc(100% - 32px));
   max-height: 85vh;
@@ -791,6 +796,7 @@ h1 {
 .mobile-close {
   display: none;
 }
+/* Este enlace aparece al recibir el foco y permite ir al contenido usando el teclado. */
 .skip-link {
   position: fixed;
   top: -70px;
@@ -872,6 +878,7 @@ h1 {
     flex-wrap: wrap;
   }
 }
+/* En móvil ocultamos el menú fuera de la pantalla y lo mostramos cuando recibe is-open. */
 @media (max-width: 767px) {
   .sidebar {
     transform: translateX(-100%);
@@ -999,6 +1006,7 @@ h1 {
     padding: 20px;
   }
 }
+/* Respetamos la preferencia del usuario si tiene desactivadas las animaciones en su sistema. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

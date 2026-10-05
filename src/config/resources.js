@@ -1,17 +1,24 @@
+// Acá dejamos los formatos y la configuración que comparten las tablas y los formularios.
+// Mostramos los valores en pesos colombianos; esto solo cambia cómo se ven en pantalla.
 export const money = (value) =>
   new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency: 'COP',
     maximumFractionDigits: 2,
   }).format(Number(value || 0));
+// Si no tenemos fecha, mostramos un guion para que la celda no quede vacía.
 export const date = (value) =>
   value
     ? new Intl.DateTimeFormat('es-CO', { dateStyle: 'medium', timeStyle: 'short' }).format(
         new Date(value),
       )
     : '—';
+// Reutilizamos estos campos porque se repiten en varios módulos.
 const name = { key: 'name', label: 'Nombre', maxLength: 120 };
 const email = { key: 'email', label: 'Correo electrónico', type: 'email', maxLength: 254 };
+// Cada recurso define sus campos editables y las columnas que vamos a mostrar.
+// Con source indicamos de dónde salen las opciones, por ejemplo los proveedores de un producto.
+// En columns usamos la clave del dato, el título y, si hace falta, una función para darle formato.
 export const resources = {
   products: {
     title: 'Productos',
@@ -88,7 +95,10 @@ export const resources = {
     ],
   },
 };
-// Whitelist explícita: nunca enviar asociaciones, ids, fechas ni totales al backend.
+// Ahora armamos los datos que se van a enviar usando solo los campos del formulario.
+// Así dejamos por fuera el id del registro, los objetos relacionados, las fechas y los totales.
+// Los campos numéricos y las referencias (como providerId) se convierten a número;
+// a los textos les quitamos los espacios del inicio y del final.
 export function payloadFor(resource, values) {
   return Object.fromEntries(
     resources[resource].fields.map((field) => [

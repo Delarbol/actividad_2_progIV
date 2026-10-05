@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { AlertCircle, LoaderCircle, X } from 'lucide-react';
+// Mostramos la carga o el error con el mismo aspecto en todas las pantallas.
+// El botón de reintentar aparece solo cuando recibimos una función para volver a consultar.
 export function Feedback({ loading, error, retry }) {
   if (loading)
     return (
@@ -21,6 +23,7 @@ export function Feedback({ loading, error, retry }) {
     );
   return null;
 }
+// Usamos el diálogo nativo del navegador para manejar el foco y bloquear el fondo al abrirlo.
 export function Modal({ title, children, onClose, busy = false }) {
   const ref = useRef(null);
   useEffect(() => {
@@ -36,6 +39,7 @@ export function Modal({ title, children, onClose, busy = false }) {
       className="app-dialog"
       aria-labelledby="dialog-title"
       onCancel={(event) => {
+        // Evitamos que Escape cierre el diálogo mientras hay una operación en curso.
         event.preventDefault();
         if (!busy) onClose();
       }}
@@ -50,6 +54,8 @@ export function Modal({ title, children, onClose, busy = false }) {
     </dialog>
   );
 }
+// Según la configuración, dibujamos una lista de opciones, un área de texto o un campo normal.
+// Pasamos las restricciones al navegador para que valide antes de enviar el formulario.
 export function Field({ field, value, onChange, options = [] }) {
   const props = {
     id: field.key,

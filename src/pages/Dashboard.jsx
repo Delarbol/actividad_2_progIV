@@ -16,11 +16,13 @@ import { useLoad } from '../hooks/useLoad';
 import { Feedback } from '../components/UI';
 export default function Dashboard() {
   const state = useLoad(async (signal) => {
+    // Consultamos los cuatro recursos al mismo tiempo y los agrupamos por nombre para el resumen.
     const keys = ['products', 'users', 'providers', 'sales'];
     const data = await Promise.all(keys.map((key) => api.list(key, signal)));
     return Object.fromEntries(keys.map((key, index) => [key, data[index]]));
   }, []);
   const data = state.data;
+  // Para esta alerta tomamos como existencias bajas cinco unidades o menos.
   const low = data?.products.filter((product) => product.stock <= 5) || [];
   return (
     <>
@@ -118,6 +120,8 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {data?.sales
+                  // Copiamos la lista antes de ordenar para no modificar los datos recibidos.
+                  // Luego tomamos las cinco ventas más recientes.
                   .slice()
                   .sort((a, b) => new Date(b.date) - new Date(a.date))
                   .slice(0, 5)

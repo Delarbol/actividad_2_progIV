@@ -1,5 +1,4 @@
 # MarketSoft Frontend
-Repositorio público: https://github.com/usuario/marketsoft-frontend
 
 SPA para administrar el supermercado de la Actividad Colaborativa II de Programación IV, Universidad de Manizales. Consume la API REST de [la actividad anterior](https://github.com/Delarbol/actividad_1_progIV) mediante Axios. Usa React, React Router y Bootstrap con la paleta Sintaxis & Tierra.
 
@@ -7,10 +6,11 @@ SPA para administrar el supermercado de la Actividad Colaborativa II de Programa
 
 El grupo contiene los mismos integrantes documentados en el proyecto anterior:
 
-| Nombre completo                   |
-| --------------------------------- |
-| Camilo Andrés De la Cruz Arboleda |
-| Andrés Felipe Peña Cruz           |
+| Nombre completo | Responsabilidad |
+| --- | --- |
+| Camilo Andrés De la Cruz Arboleda | Desarrollo inicial del proyecto, pruebas iniciales de funcionamiento integrado con la API.|
+| Andrés Felipe Peña Cruz | Revisión general, pruebas en local con ingreso de datos y complementación del README |
+
 
 ## Ejecución
 

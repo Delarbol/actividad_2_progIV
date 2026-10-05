@@ -8,11 +8,14 @@ import { Feedback, Field, Modal } from '../components/UI';
 import DeleteDialog from '../components/DeleteDialog';
 import ResourceForm from '../components/ResourceForm';
 
+// Acá manejamos los productos de una venta. Si recibimos un detalle, cargamos sus datos para editarlo.
 function DetailForm({ sale, detail, onClose, onSaved }) {
   const [values, setValues] = useState(detail || { productId: '', quantity: 1 });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const state = useLoad((signal) => api.list('products', signal), []);
+  // Quitamos los productos que ya están en otros detalles de esta venta para no repetirlos.
+  // Al editar, conservamos como opción el producto del detalle actual.
   const options = (state.data || []).filter(
     (product) =>
       !sale.details.some((item) => item.productId === product.id && item.id !== detail?.id),
@@ -22,6 +25,8 @@ function DetailForm({ sale, detail, onClose, onSaved }) {
     setBusy(true);
     setError('');
     try {
+      // Enviamos producto y cantidad; saleId solo hace falta al crear el detalle.
+      // El backend se encarga del precio, las existencias y el total de la venta.
       const body = {
         productId: Number(values.productId),
         quantity: Number(values.quantity),
@@ -80,6 +85,7 @@ function DetailForm({ sale, detail, onClose, onSaved }) {
   );
 }
 export default function SalePage() {
+  // Tomamos el id de la dirección para consultar esta venta y sus detalles.
   const { id } = useParams();
   const state = useLoad((signal) => api.get('sales', id, signal), [id]);
   const [editor, setEditor] = useState(null);
@@ -87,6 +93,7 @@ export default function SalePage() {
   const [editUser, setEditUser] = useState(false);
   const [notice, setNotice] = useState('');
   const sale = state.data;
+  // Volvemos a consultar después de cada cambio para mostrar el total calculado por el servidor.
   function saved() {
     setEditor(null);
     setDeleting(null);
@@ -158,6 +165,7 @@ export default function SalePage() {
                       <td>{money(detail.price)}</td>
                       <td>{detail.quantity}</td>
                       <td>
+                        {/* Calculamos en centavos el subtotal que mostramos, usando el precio registrado. */}
                         {money((Math.round(Number(detail.price) * 100) * detail.quantity) / 100)}
                       </td>
                       <td>

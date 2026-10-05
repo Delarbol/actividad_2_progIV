@@ -8,6 +8,7 @@ import { payloadFor } from '../src/config/resources';
 import ResourcePage from '../src/pages/ResourcePage';
 import App from '../src/App';
 
+// Simulamos abrir y cerrar el diálogo porque estas pruebas no usan un navegador completo.
 beforeEach(() => {
   HTMLDialogElement.prototype.showModal = function () {
     this.open = true;
@@ -16,10 +17,12 @@ beforeEach(() => {
     this.open = false;
   };
 });
+// Limpiamos la pantalla y restauramos las funciones para que una prueba no afecte a la siguiente.
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
 });
+// Revisamos qué datos enviamos y cómo leemos las respuestas, usando respuestas controladas.
 describe('Contrato de API', () => {
   it('envía únicamente campos editables con números normalizados', () => {
     expect(
@@ -58,6 +61,7 @@ describe('Contrato de API', () => {
     expect(errorMessage({})).toContain('conectar con la API');
   });
 });
+// Ahora probamos las acciones del usuario, incluyendo errores, correcciones y reintentos.
 describe('Interacciones de la SPA', () => {
   it('busca registros y muestra resultados vacíos', async () => {
     vi.spyOn(api, 'list').mockResolvedValue([

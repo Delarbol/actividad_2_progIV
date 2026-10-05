@@ -8,6 +8,7 @@ import { Feedback } from '../components/UI';
 import ResourceForm from '../components/ResourceForm';
 import DeleteDialog from '../components/DeleteDialog';
 
+// Esta página resuelve la consulta, búsqueda y gestión de cada recurso usando su configuración.
 export default function ResourcePage({ resource }) {
   const config = resources[resource];
   const state = useLoad((signal) => api.list(resource, signal), [resource]);
@@ -16,7 +17,10 @@ export default function ResourcePage({ resource }) {
   const [editor, setEditor] = useState(null);
   const [deleting, setDeleting] = useState(null);
   const [notice, setNotice] = useState('');
+  // Una clave como provider.name nos permite leer el nombre dentro del proveedor del producto.
   const valueAt = (row, key) => key.split('.').reduce((value, part) => value?.[part], row);
+  // Buscamos sobre los registros ya cargados, usando el id y los datos de las columnas.
+  // Pasamos ambos textos a minúsculas para que la búsqueda no dependa de cómo se escribieron.
   const filtered = (state.data || []).filter((row) =>
     [row.id, ...config.columns.map(([key]) => valueAt(row, key))].some((value) =>
       String(value ?? '')
@@ -24,8 +28,10 @@ export default function ResourcePage({ resource }) {
         .includes(query.toLocaleLowerCase('es')),
     ),
   );
+  // Mostramos ocho registros por página. Si se reduce la lista, ajustamos la página actual.
   const pages = Math.max(1, Math.ceil(filtered.length / 8));
   const currentPage = Math.min(page, pages);
+  // Después de guardar o eliminar, cerramos el diálogo y consultamos nuevamente la API.
   function done(message) {
     setEditor(null);
     setDeleting(null);

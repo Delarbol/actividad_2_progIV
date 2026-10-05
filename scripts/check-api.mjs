@@ -3,6 +3,7 @@
 import assert from 'node:assert/strict';
 const base = process.env.API_URL || 'http://localhost:3000/api';
 const tag = `frontend-test-${Date.now()}`;
+// Guardamos los identificadores creados para poder eliminarlos al terminar, incluso si algo falla.
 const owned = [];
 async function request(path, method = 'GET', body) {
   const response = await fetch(`${base}/${path}`, {
@@ -21,6 +22,7 @@ async function create(resource, body) {
   return record;
 }
 try {
+  // Primero creamos el proveedor y el usuario porque el producto y la venta los necesitan.
   const providerBody = {
     name: tag,
     phone: '3001234567',
@@ -52,6 +54,7 @@ try {
     productId: product.id,
     quantity: 2,
   });
+  // Verificamos que vender dos unidades de 4500 dé un total de 9000 y descuente las existencias.
   assert.equal(Number((await request(`sales/${sale.id}`)).total), 9000);
   assert.equal((await request(`products/${product.id}`)).stock, 8);
   await request(`sale-details/${detail.id}`, 'PUT', { productId: product.id, quantity: 3 });
@@ -59,12 +62,14 @@ try {
   assert.equal((await request(`products/${product.id}`)).stock, 7);
   for (const resource of ['products', 'providers', 'users', 'sales'])
     assert.ok(Array.isArray(await request(resource)));
+  // Al quitar el detalle, comprobamos que se devuelvan las unidades y el total quede en cero.
   await request(`sale-details/${detail.id}`, 'DELETE');
   owned.pop();
   assert.equal(Number((await request(`sales/${sale.id}`)).total), 0);
   assert.equal((await request(`products/${product.id}`)).stock, 10);
   console.log('Integración real OK: CRUD de cuatro módulos, detalles, total e inventario.');
 } finally {
+  // Limpiamos en orden inverso para eliminar primero los registros que dependen de otros.
   for (const [resource, id] of owned.reverse()) {
     try {
       await request(`${resource}/${id}`, 'DELETE');

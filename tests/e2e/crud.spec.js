@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('CRUD real, detalles de venta y navegación móvil', async ({ page, request }) => {
+  // Marcamos los registros de esta ejecución para encontrarlos y limpiarlos al finalizar.
   const tag = `ui-${Date.now()}`;
   const base = process.env.API_URL || 'http://localhost:3000/api';
   const errors = [];
@@ -67,6 +68,7 @@ test('CRUD real, detalles de venta y navegación móvil', async ({ page, request
     await page.getByRole('button', { name: /Editar detalle/ }).click();
     await page.getByLabel('Cantidad', { exact: true }).fill('3');
     await save('Guardar detalle');
+    // Contrastamos lo que hicimos en la interfaz con el total y las existencias de la API.
     expect(Number((await read(`sales/${saleId}`)).total)).toBe(13500);
     expect((await read('products')).find((item) => item.name === tag).stock).toBe(7);
 
@@ -78,6 +80,7 @@ test('CRUD real, detalles de venta y navegación móvil', async ({ page, request
       fullPage: true,
       animations: 'disabled',
     });
+    // También revisamos la navegación móvil y que el contenido no se salga del ancho de la pantalla.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.screenshot({
       path: 'test-results/dashboard-mobile.png',
@@ -111,6 +114,7 @@ test('CRUD real, detalles de venta y navegación móvil', async ({ page, request
     }
     expect(errors).toEqual([]);
   } finally {
+    // Si falla algún paso, buscamos los datos de esta ejecución y los eliminamos según sus relaciones.
     const users = (await read('users')).filter((item) => item.name === tag);
     const sales = (await read('sales')).filter((item) =>
       users.some((user) => user.id === item.userId),
